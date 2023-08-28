@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <select id="formatSelect">
+        <option value="txt">Text</option>
+        <option value="pdf">PDF</option>
+    </select>
+    <button id="downloadButton">Download</button>
+
+    <script>
+        document.getElementById("downloadButton").addEventListener("click", function() {
+            const selectedFormat = document.getElementById("formatSelect").value;
+
+            if (selectedFormat === "txt") {
+                downloadTextFile();
+            } else if (selectedFormat === "pdf") {
+                downloadPdfFile();
+            }
+        });
+
+        function downloadTextFile() {
+            const textContent = "Hello, this is the content of the file.";
+            const blob = new Blob([textContent], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement("a");
+            anchorElement.href = url;
+            anchorElement.download = "sample.txt";
+            anchorElement.style.display = "none";
+            document.body.appendChild(anchorElement);
+            anchorElement.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadPdfFile() {
+            const pdf = new jsPDF();
+            pdf.text("Hello, this is the content of the PDF file.", 10, 10);
+            const blob = pdf.output("blob");
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement("a");
+            anchorElement.href = url;
+            anchorElement.download = "sample.pdf";
+            anchorElement.style.display = "none";
+            document.body.appendChild(anchorElement);
+            anchorElement.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
